@@ -69,7 +69,7 @@ Testing/
 .cache/
 
 # Others
-SPOE.txt
-CLAUDE.md
-.claude
 reference/google-cpp-style-guide.html
+reference/SPOE.txt
+C*.md
+.c*e
