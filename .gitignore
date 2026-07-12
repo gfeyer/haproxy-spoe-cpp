@@ -70,4 +70,6 @@ Testing/
 
 # Others
 SPOE.txt
-C*.md
+CLAUDE.md
+.claude
+reference/google-cpp-style-guide.html
