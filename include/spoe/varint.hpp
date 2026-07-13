@@ -24,9 +24,28 @@ namespace spoe::wire{
             return {};
         }
 
-        // TODO: update for values >= 240
-        return std::unexpected(varint_error::buffer_too_small);
+        // write special 0xF byte signalling continuation and lower 4 bits 
+        out[0] = static_cast<std::byte>(0xF0 | (value & 0x0F));
+        out = out.subspan(1);
+        value = (value - 240) >> 4;
 
+        while(value >= 128){
+            if(out.size() < 1){
+                return std::unexpected(varint_error::buffer_too_small);
+            }
+
+            out[0] = static_cast<std::byte>(0x80 | (value & 0xFF));
+            out = out.subspan(1);
+            value = (value - 128) >> 7;
+        }
+
+        if(out.size() < 1){
+            return std::unexpected(varint_error::buffer_too_small);
+        }
+
+        out[0] = static_cast<std::byte>(value);
+        out = out.subspan(1);
+        return {};
     }
 
 }
